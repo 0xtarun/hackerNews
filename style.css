@@ -5,7 +5,6 @@ body {
     /* Terminal background color */
     font-family: Monaco, monospace;
     /* Terminal font family */
-    margin: 0;
     padding: 0;
     color: #00FF00;
     /* Terminal text color */
@@ -19,10 +18,13 @@ a {
     color: #00FF00;
     /* Terminal link text color */
     padding: 2px 5px;
+    display:block;
 }
 
 .container-fluid {
     padding: 0;
+    margin: 40px;
+    margin-top: 3%;
 }
 
 .row.text-center.bg-danger {
@@ -45,7 +47,6 @@ h1 {
 }
 
 #news-list {
-    list-style: none;
     padding: 0;
 }
 
