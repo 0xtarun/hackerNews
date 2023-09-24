@@ -9,13 +9,13 @@
     <style>
     </style>
 </head>
-<body class="bg-dark text-light">
+<body style="background-color: rgb(29, 29, 29);" class="text-light">
     <div class="container">
         <div style="text-align: center;" class="row">
             <h1>Hacker News</h1>
         </div>
        <div class="row">
-        <div class="col">
+        <div style="" class="col">
             
             <ol id="news-list">
                 <!-- News items will be displayed here -->
@@ -40,7 +40,7 @@
                     const story = await storyResponse.json();
 
                     const listItem = document.createElement('li');
-                    listItem.innerHTML = `<a style="text-decoration:none;" class="text-light text-center" href="${story.url}" target="_blank">${story.title}</a>`;
+                    listItem.innerHTML = `<a style="text-decoration:none;font-size: 120%; background-color: rgb(43, 43, 43);display:block;" class="text-light mb-1" href="${story.url}" target="_blank">${story.title}</a>`;
                     newsList.appendChild(listItem);
                 }
             } catch (error) {
