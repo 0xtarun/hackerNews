@@ -1,0 +1,56 @@
+
+/* Add your CSS styles here */
+body {
+    background-color: #1E1E1E;
+    /* Terminal background color */
+    font-family: Monaco, monospace;
+    /* Terminal font family */
+    margin: 0;
+    padding: 0;
+    color: #00FF00;
+    /* Terminal text color */
+}
+
+a {
+    font-size: larger;
+    text-decoration: none;
+    background-color: #333;
+    /* Terminal link background color */
+    color: #00FF00;
+    /* Terminal link text color */
+    padding: 2px 5px;
+}
+
+.container-fluid {
+    padding: 0;
+}
+
+.row.text-center.bg-danger {
+    background-color: #D14836;
+    /* Header background color */
+    padding: 10px;
+    margin: 0;
+}
+
+h1 {
+    font-size: 1.5rem;
+    /* Header text size */
+    margin: 0;
+    color: #00FF00;
+    /* Header text color */
+}
+
+.col {
+    padding: 10px;
+}
+
+#news-list {
+    list-style: none;
+    padding: 0;
+}
+
+li {
+    border-bottom: 1px solid #333;
+    /* Separator between items */
+    padding: 5px 0;
+}
