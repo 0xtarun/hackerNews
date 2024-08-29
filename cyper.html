@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Encoder/Decoder</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        textarea {
+            width: 100%;
+            height: 150px;
+        }
+        button {
+            margin-top: 10px;
+        }
+        p {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Text Encoder/Decoder</h1>
+    <textarea id="inputText" placeholder="Enter your text here..."></textarea>
+    <br>
+    <input type="text" id="cipherKey" placeholder="Enter your cipher key">
+    <br>
+    <button onclick="encodeText()">Encode</button>
+    <button onclick="decodeText()">Decode</button>
+    <br>
+    <p>Output:</p>
+    <textarea id="outputText" readonly></textarea>
+
+    <script>
+       /* // Function to encode text*/
+        function encodeText() {
+            const inputText = document.getElementById("inputText").value;
+            const cipherKey = document.getElementById("cipherKey").value;
+
+            if (cipherKey.length === 0) {
+                alert("Please enter a cipher key!");
+                return;
+            }
+
+            let encodedText = '';
+            for (let i = 0; i < inputText.length; i++) {
+                const charCode = inputText.charCodeAt(i);
+                const keyChar = cipherKey.charCodeAt(i % cipherKey.length);
+                encodedText += String.fromCharCode(charCode + keyChar);
+            }
+
+            document.getElementById("outputText").value = encodedText;
+        }
+
+       /* // Function to decode text*/
+        function decodeText() {
+            const encodedText = document.getElementById("inputText").value;
+            const cipherKey = document.getElementById("cipherKey").value;
+
+            if (cipherKey.length === 0) {
+                alert("Please enter a cipher key!");
+                return;
+            }
+
+            let decodedText = '';
+            for (let i = 0; i < encodedText.length; i++) {
+                const charCode = encodedText.charCodeAt(i);
+                const keyChar = cipherKey.charCodeAt(i % cipherKey.length);
+                decodedText += String.fromCharCode(charCode - keyChar);
+            }
+
+            document.getElementById("outputText").value = decodedText;
+        }
+    </script>
+</body>
+</html>
