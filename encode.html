@@ -3,117 +3,80 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple Encryption/Decryption Tool</title>
+    <title>Text Encoder/Decoder</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
-            color: #333;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            margin: 20px;
         }
-
-        .container {
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            max-width: 500px;
-            width: 100%;
-            text-align: center;
-        }
-
-        h1 {
-            margin-bottom: 20px;
-            font-size: 24px;
-        }
-
         textarea {
             width: 100%;
-            height: 100px;
-            padding: 10px;
-            border-radius: 4px;
-            border: 1px solid #ccc;
-            font-size: 16px;
-            resize: none;
-            box-sizing: border-box;
-            margin-bottom: 20px;
+            height: 150px;
         }
-
-        input[type="number"] {
-            padding: 5px;
-            font-size: 16px;
-            width: 60px;
-            margin-bottom: 20px;
-        }
-
         button {
-            padding: 10px 20px;
-            font-size: 16px;
-            border-radius: 4px;
-            border: none;
-            cursor: pointer;
-            background-color: #4CAF50;
-            color: #fff;
+            margin-top: 10px;
         }
-
-        button:hover {
-            background-color: #45a049;
-        }
-
-        .output {
-            margin-top: 20px;
-        }
-
-        .output p {
-            font-size: 18px;
-            word-wrap: break-word;
+        p {
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Simple Encryption/Decryption Tool</h1>
-        <textarea id="inputText" placeholder="Enter your text here..."></textarea>
-        <br>
-        <label for="shiftValue">Shift Value (Key): </label>
-        <input type="number" id="shiftValue" value="3">
-        <br>
-        <button onclick="encryptText()">Encrypt</button>
-        <button onclick="decryptText()">Decrypt</button>
-        <div class="output">
-            <h2>Output:</h2>
-            <p id="outputText"></p>
-        </div>
-    </div>
-    <script>
-        function caesarCipher(str, shift) {
-            return str.split('').map(function(char) {
-                if (char.match(/[a-z]/i)) {
-                    const charCode = char.charCodeAt(0);
-                    const base = (charCode >= 65 && charCode <= 90) ? 65 : 97;
-                    return String.fromCharCode(((charCode - base + shift) % 26) + base);
-                }
-                return char;
-            }).join('');
+    <h1>Text Encoder/Decoder</h1>
+    <textarea id="inputText" placeholder="Enter your text here..."></textarea>
+    <br>
+    <input type="text" id="cipherKey" placeholder="Enter your cipher key">
+    <br>
+    <button onclick="encodeText()">Encode</button>
+    <button onclick="decodeText()">Decode</button>
+    <br>
+    <p>Output:</p>
+    <textarea id="outputText" readonly></textarea>
+
+ <script>
+        // Function to encode text
+        function encodeText() {
+            const inputText = document.getElementById("inputText").value;
+            const cipherKey = document.getElementById("cipherKey").value;
+
+            if (cipherKey.length === 0) {
+                alert("Please enter a cipher key!");
+                return;
+            }
+
+            let encodedText = '';
+            for (let i = 0; i < inputText.length; i++) {
+                const charCode = inputText.charCodeAt(i);
+                const keyChar = cipherKey.charCodeAt(i % cipherKey.length);
+                encodedText += String.fromCharCode(charCode + keyChar);
+            }
+
+            // Convert encoded text to base64
+            const encodedBase64 = btoa(unescape(encodeURIComponent(encodedText)));
+            document.getElementById("outputText").value = encodedBase64;
         }
 
-        function encryptText() {
-            const text = document.getElementById("inputText").value;
-            const shift = parseInt(document.getElementById("shiftValue").value);
-            const encryptedText = caesarCipher(text, shift);
-            document.getElementById("outputText").innerText = encryptedText;
-        }
+        // Function to decode text
+        function decodeText() {
+            const encodedBase64 = document.getElementById("inputText").value;
+            const cipherKey = document.getElementById("cipherKey").value;
 
-        function decryptText() {
-            const text = document.getElementById("inputText").value;
-            const shift = parseInt(document.getElementById("shiftValue").value);
-            const decryptedText = caesarCipher(text, -shift);
-            document.getElementById("outputText").innerText = decryptedText;
+            if (cipherKey.length === 0) {
+                alert("Please enter a cipher key!");
+                return;
+            }
+
+            // Decode base64 to get the encoded text
+            const encodedText = decodeURIComponent(escape(atob(encodedBase64)));
+
+            let decodedText = '';
+            for (let i = 0; i < encodedText.length; i++) {
+                const charCode = encodedText.charCodeAt(i);
+                const keyChar = cipherKey.charCodeAt(i % cipherKey.length);
+                decodedText += String.fromCharCode(charCode - keyChar);
+            }
+
+            document.getElementById("outputText").value = decodedText;
         }
     </script>
 </body>
