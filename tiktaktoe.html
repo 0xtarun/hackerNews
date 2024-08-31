@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic-Tac-Toe Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #1e1e1e;
+            color: #f5f5f5;
+        }
+        .game-container {
+            text-align: center;
+            position: relative;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            grid-template-rows: repeat(3, 100px);
+            gap: 5px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        .cell {
+            width: 100px;
+            height: 100px;
+            background-color: #333;
+            border: 2px solid #444;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            cursor: pointer;
+        }
+        .cell:hover {
+            background-color: #444;
+        }
+        .cell.winner {
+            background-color: #ffcc00; /* Highlight color for winning cells */
+        }
+        .message {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .message.win {
+            color: #ffcc00; /* Different color for win message */
+        }
+        .reset-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #555;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .reset-button:hover {
+            background-color: #777;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <div class="message" id="message">Player X's Turn</div>
+        <div class="grid" id="grid">
+            <div class="cell" data-index="0"></div>
+            <div class="cell" data-index="1"></div>
+            <div class="cell" data-index="2"></div>
+            <div class="cell" data-index="3"></div>
+            <div class="cell" data-index="4"></div>
+            <div class="cell" data-index="5"></div>
+            <div class="cell" data-index="6"></div>
+            <div class="cell" data-index="7"></div>
+            <div class="cell" data-index="8"></div>
+        </div>
+        <button class="reset-button" onclick="resetGame()">Reset Game</button>
+    </div>
+
+    <script>
+        const cells = document.querySelectorAll('.cell');
+        const message = document.getElementById('message');
+        let currentPlayer = 'X';
+        let board = ['', '', '', '', '', '', '', '', ''];
+        let gameActive = true;
+
+        cells.forEach(cell => {
+            cell.addEventListener('click', () => {
+                const index = cell.getAttribute('data-index');
+                if (board[index] === '' && gameActive) {
+                    board[index] = currentPlayer;
+                    cell.textContent = currentPlayer;
+                    if (checkWin()) {
+                        message.textContent = `Player ${currentPlayer} Wins!`;
+                        message.classList.add('win');
+                        highlightWinningCells();
+                        gameActive = false;
+                    } else if (board.every(cell => cell !== '')) {
+                        message.textContent = 'It\'s a Draw!';
+                        message.classList.remove('win');
+                        gameActive = false;
+                    } else {
+                        currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+                        message.textContent = `Player ${currentPlayer}'s Turn`;
+                        message.classList.remove('win');
+                    }
+                }
+            });
+        });
+
+        function checkWin() {
+            const winningPatterns = [
+                [0, 1, 2],
+                [3, 4, 5],
+                [6, 7, 8],
+                [0, 3, 6],
+                [1, 4, 7],
+                [2, 5, 8],
+                [0, 4, 8],
+                [2, 4, 6]
+            ];
+            return winningPatterns.some(pattern => {
+                const [a, b, c] = pattern;
+                if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+                    highlightPattern(pattern);
+                    return true;
+                }
+                return false;
+            });
+        }
+
+        function highlightPattern(pattern) {
+            pattern.forEach(index => {
+                cells[index].classList.add('winner');
+            });
+        }
+
+        function highlightWinningCells() {
+            const winningPatterns = [
+                [0, 1, 2],
+                [3, 4, 5],
+                [6, 7, 8],
+                [0, 3, 6],
+                [1, 4, 7],
+                [2, 5, 8],
+                [0, 4, 8],
+                [2, 4, 6]
+            ];
+            winningPatterns.forEach(pattern => {
+                const [a, b, c] = pattern;
+                if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+                    highlightPattern(pattern);
+                }
+            });
+        }
+
+        function resetGame() {
+            board = ['', '', '', '', '', '', '', '', ''];
+            cells.forEach(cell => {
+                cell.textContent = '';
+                cell.classList.remove('winner');
+            });
+            currentPlayer = 'X';
+            message.textContent = `Player ${currentPlayer}'s Turn`;
+            message.classList.remove('win');
+            gameActive = true;
+        }
+    </script>
+</body>
+</html>
