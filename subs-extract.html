@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Domain and Subdomain Extractor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #1e1e1e;
+            color: #f5f5f5;
+        }
+        textarea {
+            width: 100%;
+            height: 150px;
+            margin-bottom: 10px;
+            background-color: #333;
+            color: #f5f5f5;
+            border: 1px solid #444;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #results {
+            margin-top: 20px;
+        }
+        #results pre {
+            background-color: #333;
+            border: 1px solid #444;
+            border-radius: 5px;
+            padding: 10px;
+            white-space: pre-wrap; /* Preserve whitespace formatting */
+        }
+        .count {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .copy-button {
+            padding: 5px 10px;
+            font-size: 14px;
+            color: #fff;
+            background-color: #28a745;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+        .copy-button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <h1>Domain and Subdomain Extractor</h1>
+    <textarea id="rawData" placeholder="Paste raw data here..."></textarea><br>
+    <button onclick="extractDomains()">Extract Domains and Subdomains</button>
+    <div id="results"></div>
+
+    <script>
+        let extractedText = '';
+        let domainCount = 0;
+
+        function extractDomains() {
+            // Get raw data from the textarea
+            const rawData = document.getElementById('rawData').value;
+            // Regular expression to match domains and subdomains
+            const domainPattern = /\b(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}\b/g;
+
+            // Find all matches
+            const matches = rawData.match(domainPattern);
+            if (matches) {
+                // Use a Set to avoid duplicates
+                const uniqueDomains = new Set(matches);
+                // Convert to array and sort the domains
+                const sortedDomains = Array.from(uniqueDomains).sort();
+
+                // Count of unique domains
+                domainCount = sortedDomains.length;
+
+                // Format the results into a single block of text
+                extractedText = sortedDomains.join('\n');
+
+                // Display the results with count and copy button
+                const resultsDiv = document.getElementById('results');
+                resultsDiv.innerHTML = `<div class="count">Number of unique domains and subdomains: ${domainCount}</div>
+                                        <button class="copy-button" onclick="copyToClipboard()">Copy</button>
+                                        <pre>${extractedText}</pre>`;
+            } else {
+                extractedText = '';
+                domainCount = 0;
+                document.getElementById('results').innerHTML = '<p>No domains or subdomains found.</p>';
+            }
+        }
+
+        function copyToClipboard() {
+            if (extractedText) {
+                navigator.clipboard.writeText(extractedText).then(() => {
+                    alert('Domains and subdomains copied to clipboard!');
+                }).catch(err => {
+                    alert('Failed to copy text: ' + err);
+                });
+            } else {
+                alert('No domains or subdomains to copy.');
+            }
+        }
+    </script>
+</body>
+</html>
